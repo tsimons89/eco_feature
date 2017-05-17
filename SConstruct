@@ -1,6 +1,6 @@
 import os
 
-eco_filter_src = Split('''src/Gpu_eco_filter.cpp src/Cpu_eco_filter.cpp''')
+eco_filter_src = Split('''src/Eco_filter.cpp src/Eco_file_access.cpp ''')
 
 boost_libs = Split('''boost_filesystem boost_program_options boost_system boost_regex''')
 

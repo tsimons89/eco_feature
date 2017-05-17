@@ -1,39 +1,52 @@
-#include "Cpu_eco_filter.hpp"
-#include "Gpu_eco_filter.hpp"
+#include "Eco_filter.hpp"
+#include "Eco_file_access.hpp"
+#include <ctime>
 
 using namespace std;
 
 int main(int argc, char * argv[]){
-	// Cpu_eco_filter filter(argv[1]);
-	// Gpu_eco_filter filter_gpu(argv[1]);
-	// float data1 [3][3] = {{1,2,3},{4,5,6},{7,8,9}};
-	// float data2 [3][3] = {{1,1,1},{2,2,2},{3,3,3}};
-	// float data3 [3][3] = {{9,8,7},{6,5,4},{3,2,1}};
-	// float data4 [3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-	// vector<Mat> mat_vec;
-	// mat_vec.push_back(Mat(Size(3,3),CV_32F,&data1));
-	// mat_vec.push_back(Mat(Size(3,3),CV_32F,&data2));
-	// mat_vec.push_back(Mat(Size(3,3),CV_32F,&data3));
-	// mat_vec.push_back(Mat(Size(3,3),CV_32F,&data4));
+	vector<Eco_filter> filters = Eco_file_access::get_filters_from_file("test.yaml");
 
-	// FileStorage fs("test.yaml",FileStorage::WRITE);
-	// fs << "filters" << mat_vec;
-	// fs.release();
+	Eco_filter orig;
 
-	vector<Mat> mat_vec_read;
-	FileStorage read("test.yaml",FileStorage::READ);
-	FileNode filters_node = read["filters"];
-	for (FileNodeIterator it=filters_node.begin(); it!=filters_node.end(); ++it)
-	{
-	    Mat mat;
-	    (*it) >> mat;
-	    mat_vec_read.push_back(mat);
-	}
-	read.release();
+	Eco_filter box = filters.at(0);
+	Eco_filter sobel = filters.at(1);
+	Eco_filter der = filters.at(2);
+	orig.apply(der);
+	orig.apply(box);
+	orig.apply(der);
+	orig.apply(box);
 
-	for(Mat mat : mat_vec_read){
-		cout << mat.type() << endl;
-		cout << mat << endl;
-	}
 
+	cuda::GpuMat image_gpu = Eco_file_access::get_gpu_image(argv[1]);
+
+	clock_t begin, end;
+
+	begin = clock();
+	cuda::GpuMat combo_gpu = orig.apply(image_gpu);
+	end = clock();
+	cout << "Combo time: " << end - begin << endl;
+
+	begin = clock();
+	combo_gpu = orig.apply(image_gpu);
+	end = clock();
+	cout << "Combo time: " << end - begin << endl;
+
+
+	begin = clock();
+	cuda::GpuMat multi_gpu = box.apply(der.apply(box.apply(der.apply(image_gpu))));
+	end = clock();
+	cout << "Multi time: " << end - begin << endl;
+
+	Mat image = Eco_file_access::get_image(argv[1]);
+	begin = clock();
+	Mat multi_image = box.apply(der.apply(box.apply(der.apply(image))));
+	end = clock();
+	cout << "Cpu time: " << end - begin << endl;
+
+
+
+
+
+	waitKey(0);
 }
