@@ -27,3 +27,24 @@ cuda::GpuMat Eco_file_access::get_gpu_image(string filename){
 	return gpu_image;
 }
 
+vector<Mat> Eco_file_access::get_images(string dir_path){
+	vector<Mat> images;
+	for(auto filename:get_all_filenames(dir_path))
+		images.push_back(get_image(filename));
+	return images;
+
+}
+vector<cuda::GpuMat> Eco_file_access::get_gpu_images(string dir_path){
+	vector<cuda::GpuMat> images;
+	for(auto filename:get_all_filenames(dir_path))
+		images.push_back(get_gpu_image(filename));
+	return images;
+}
+
+vector<String> Eco_file_access::get_all_filenames(string dir_path){
+	vector<String> filenames;
+	glob(String(dir_path),filenames);
+	return filenames;
+}
+
+

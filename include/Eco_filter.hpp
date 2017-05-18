@@ -20,6 +20,9 @@ public:
 	void apply(const Eco_filter& filter);
 	Mat apply(const Mat& image);
 	cuda::GpuMat apply(const cuda::GpuMat& image);
+	vector<Mat> apply(const vector<Mat>& images);
+	vector<cuda::GpuMat> apply(const vector<cuda::GpuMat>& images);
+
 };
 
 std::ostream &operator<<(std::ostream &os, Eco_filter const &filter);
