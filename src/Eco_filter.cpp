@@ -1,4 +1,5 @@
 #include "Eco_filter.hpp"
+#include <opencv2/cudaarithm.hpp>
 
 Eco_filter::Eco_filter(){
 	filter_mat = Mat::ones(1,1,CV_32F);
