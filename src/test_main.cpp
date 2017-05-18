@@ -1,3 +1,5 @@
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/cuda.hpp>
 #include "Eco_filter.hpp"
 #include "Eco_file_access.hpp"
 #include <ctime>
