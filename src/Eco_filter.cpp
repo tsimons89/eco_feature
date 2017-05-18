@@ -34,6 +34,17 @@ vector<Mat> Eco_filter::apply(const vector<Mat>& images){
 	return ret_images;
 }
 
+vector<Mat> Eco_filter::apply_loop(const vector<Mat>& images){
+	vector<Mat> ret_images;
+	for(Mat image:images){
+		cout << "loop\n";
+		ret_images.push_back(apply(image));
+	}
+	return ret_images;
+}
+
+
+
 vector<cuda::GpuMat> Eco_filter::apply(const vector<cuda::GpuMat>& images){
 	vector<cuda::GpuMat> ret_images;
 	Mat merged,ret_merged;
