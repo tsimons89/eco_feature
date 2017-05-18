@@ -14,9 +14,9 @@ filters:
       rows: 3
       cols: 3
       dt: f
-      data: [ -1, 0, 1,
-              -2, 0, 2,
-              -1, 0, 1 ]
+      data: [ 1, 0, -1,
+              2, 0, -2,
+              1, 0, -1 ]
    - !!opencv-matrix
       rows: 1
       cols: 3

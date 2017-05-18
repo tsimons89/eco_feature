@@ -20,8 +20,30 @@ cuda::GpuMat Eco_filter::apply(const cuda::GpuMat& image){
 	cuda::GpuMat ret_image;
 	Ptr<cuda::Filter> cu_filter_ptr = cuda::createLinearFilter(filter_mat.type(),filter_mat.type(),get_mat_rotated());
 	cu_filter_ptr->apply(image,ret_image);
+	// Ptr<cuda::Convolution> conv = cuda::createConvolution();
+	// conv->convolve(image,get_mat_rotated(),ret_image);
 	return ret_image;
 }
+
+vector<Mat> Eco_filter::apply(const vector<Mat>& images){
+	vector<Mat> ret_images;
+	Mat merged,ret_merged;
+	merge(images,merged);
+	ret_merged = apply(merged);
+	split(ret_merged,ret_images);
+	return ret_images;
+}
+
+vector<cuda::GpuMat> Eco_filter::apply(const vector<cuda::GpuMat>& images){
+	vector<cuda::GpuMat> ret_images;
+	Mat merged,ret_merged;
+	cuda::merge(images,merged);
+	ret_merged = apply(merged);
+	cuda::split(ret_merged,ret_images);
+	return ret_images;
+}
+
+
 
 void Eco_filter::extend_to_fit(const Size& other_filter_size){
 	int top_bot_ext = other_filter_size.height/2;
