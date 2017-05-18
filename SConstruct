@@ -11,7 +11,7 @@ cuda_opencv_libs = Split('''opencv_cudaarithm opencv_cudabgsegm opencv_cudacodec
 
 
 
-includes = ['include', '/usr/local/include/opencv2', '/usr/local/include/opencv','/usr/local/include/flycapture/']
+includes = ['include', '/usr/local/include/opencv2', '/usr/local/include/opencv','/usr/local/include/flycapture/','/usr/local/cuda-8.0/include/']
 
 #cxx_flags = "-Wall -g -fno-inline -fopenmp"
 #cxx_flags = "-Wall -g -fno-inline"
