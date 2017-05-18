@@ -12,13 +12,12 @@ int main(int argc, char * argv[]){
 	vector<Eco_filter> filters = Eco_file_access::get_filters_from_file("test.yaml");
 	Eco_filter sobel = filters.at(1);
 
-	Mat image = Eco_file_access::get_image(argv[1]);
-	cuda::GpuMat gpu_image = Eco_file_access::get_gpu_image(argv[1]);
-	CALC_TIME(sobel.apply(image),1)
-	CALC_TIME(sobel.apply(image),2)
-	CALC_TIME(sobel.apply(gpu_image),3)
-	CALC_TIME(sobel.apply(gpu_image),4)
-	CALC_TIME(Sobel(image,image,-1,1,0),5)
-	CALC_TIME(Sobel(image,image,-1,0,1),6)
+	vector<Mat> images = Eco_file_access::get_images(argv[1]);
+
+	CALC_TIME(vector<Mat> images_applied = sobel.apply(images),1)
+	CALC_TIME(vector<Mat> images_loop = sobel.apply_loop(images),2)
+	CALC_TIME(vector<Mat> images_applied_2 = sobel.apply(images),3)
+	CALC_TIME(vector<Mat> images_loop_2 = sobel.apply_loop(images),4)
+
 
 }

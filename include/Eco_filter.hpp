@@ -23,6 +23,7 @@ public:
 	Mat apply(const Mat& image);
 	cuda::GpuMat apply(const cuda::GpuMat& image);
 	vector<Mat> apply(const vector<Mat>& images);
+	vector<Mat> apply_loop(const vector<Mat>& images);
 	vector<cuda::GpuMat> apply(const vector<cuda::GpuMat>& images);
 
 };
