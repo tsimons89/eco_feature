@@ -130,7 +130,7 @@ void Eco_creature::write_forest(string path){
 void Eco_creature::load_forest(string path){
 	stringstream filename;
 	filename << path << "/rf_" << genome << ".yml";
-	forest = RTrees::load(filename.str());
+	forest = RTrees::load<RTrees>(filename.str());
 }
 
 

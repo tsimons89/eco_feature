@@ -1,5 +1,6 @@
 #include "Adaboost_model.hpp"
 #include <ctime>
+#include <fstream> 
 
 int unsigned Adaboost_model::num_creatures = 0;
 int unsigned Adaboost_model::pool_size = 0;
@@ -151,5 +152,6 @@ int Adaboost_model::predict(string image_path){
 	int prediction = get_weighted_prediction(image);
 	clock_t end = clock();
 	cout << "\tIn predict: " << end - begin << endl;
+	cout << "\tTime: " << ((end - begin)/double(CLOCKS_PER_SEC))*1000 << "ms" << endl;
 	return prediction;
 }
