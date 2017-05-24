@@ -1,6 +1,15 @@
 import os
 
-eco_filter_src = Split('''src/Eco_filter.cpp src/Eco_file_access.cpp ''')
+eco_src = Split('''
+	src/Eco_filter.cpp 
+	src/Eco_genome.cpp 
+	src/Eco_creature.cpp 
+	src/probability.cpp
+	src/Eco_population.cpp
+	src/Data_set.cpp
+	src/Eco_options.cpp
+	src/Adaboost_model.cpp
+	''')
 
 boost_libs = Split('''boost_filesystem boost_program_options boost_system boost_regex''')
 
@@ -23,5 +32,6 @@ env = Environment(CPPPATH=includes, CXXFLAGS=cxx_flags, LINKFLAGS=link_flags,
 		LIBPATH=['/usr/local/lib'],
 		LD_LIBRARY_PATH=['/usr/local/lib'])
 
-#env.Program('bin/eco_train_gpu', eco_train_gpu)
-env.Program('bin/test', ['src/test_main.cpp'] + eco_filter_src)
+env.Program('bin/eco_train', ['src/eco_train.cpp'] + eco_src)
+env.Program('bin/eco_test', ['src/eco_test.cpp'] + eco_src)
+env.Program('bin/eco_single_predict', ['src/eco_single_predict.cpp'] + eco_src)
