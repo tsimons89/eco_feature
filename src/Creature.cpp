@@ -38,7 +38,7 @@ void Creature::train(Data_set data_set){
 }
 
 void Creature::set_labels_and_images(Data_set data_set){
-	labels = Mat(data_set.get_labels(),true);
+	labels = Mat(data_set.get_labels(), true);
 	images = process(data_set.get_images());
 }
 
