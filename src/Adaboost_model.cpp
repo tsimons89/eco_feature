@@ -8,7 +8,7 @@ string Adaboost_model::results_path;
 
 void Adaboost_model::train(){
 	check_params();
-	train_data.load_data();
+	train_data.load();
 	model_creatures.clear();
 	while(model_creatures.size() < num_creatures)
 		add_creature_to_model();
@@ -34,29 +34,30 @@ void Adaboost_model::check_params(){
 }
 
 void Adaboost_model::add_creature_to_pool(){
-	Eco_population pop;
+	Population pop;
 	pool_creatures.push_back(pop.create_fit_creature(resample_data));
 }
 
 void Adaboost_model::update_model(){
-	Eco_creature best_pool_creature = select_from_pool();
+	Creature best_pool_creature = select_from_pool();
 	if(!is_creature_in_model(best_pool_creature)){
-		cout << "Creature " << model_creatures.size() << " of " << num_creatures << endl;
+		cout << "Creature " << model_creatures.size()+1 << " of " << num_creatures << endl;
 		update_weights(best_pool_creature);
 		model_creatures.push_back(best_pool_creature);
 	}
 }
 
-Eco_creature Adaboost_model::select_from_pool(){
-	Eco_creature fittest_creature;
+Creature Adaboost_model::select_from_pool(){
+	Creature fittest_creature;
 	for(auto& creature:pool_creatures){
+		creature.reset_fitness();
 		creature.update_weighted_fitness(train_data);
 		fittest_creature = (creature.get_weighted_fitness() > fittest_creature.get_weighted_fitness())?creature:fittest_creature;
 	}
 	return fittest_creature;
 }
 
-void Adaboost_model::update_weights(Eco_creature creature){
+void Adaboost_model::update_weights(Creature creature){
 	correct_count = 0;
 	cout << "\tAlpha: " << creature.get_alpha() << endl;
 	for(Data_sample& sample:train_data.data_samples)
@@ -65,7 +66,7 @@ void Adaboost_model::update_weights(Eco_creature creature){
 	normalize_weights();
 }
 
-void Adaboost_model::upvote_mispredicted_sample(Eco_creature creature, Data_sample& sample){
+void Adaboost_model::upvote_mispredicted_sample(Creature creature, Data_sample& sample){
 	int prediction = creature.predict(sample.image);
 	if(prediction != sample.label)
 		sample.weight *= exp(creature.get_alpha());
@@ -81,7 +82,7 @@ void Adaboost_model::normalize_weights(){
 		sample.weight /= total;
 }
 
-bool Adaboost_model::is_creature_in_model(Eco_creature creature){
+bool Adaboost_model::is_creature_in_model(Creature creature){
 	for(auto model_creature:model_creatures){
 		if(creature.get_genome() == model_creature.get_genome())
 			return true;
@@ -92,7 +93,7 @@ bool Adaboost_model::is_creature_in_model(Eco_creature creature){
 void Adaboost_model::write(){
 	string out_filename = results_path + "/adaboost_model";
 	ofstream out_file(out_filename);
-	for(Eco_creature creature:model_creatures){
+	for(Creature creature:model_creatures){
 		out_file << creature.get_alpha() << " " << creature.get_genome() << endl;
 		creature.write_forest(results_path);
 	}
@@ -114,11 +115,11 @@ void Adaboost_model::load_creature(string file_line,string path){
 	double alpha;
 	string genome_string;
 	ss >> alpha >> genome_string;
-	model_creatures.push_back(Eco_creature(genome_string,alpha,path));
+	model_creatures.push_back(Creature(genome_string,alpha,path));
 }
 
 void Adaboost_model::test(){
-	test_data.load_data();
+	test_data.load();
 	int num_correct = 0;
 	for(Data_sample sample:test_data.data_samples){
 		int prediction = get_weighted_prediction(sample.image);
@@ -130,7 +131,7 @@ void Adaboost_model::test(){
 
 int Adaboost_model::get_weighted_prediction(Mat image){
 	vector<double> scores(MAX_NUM_CLASSES,0);
-	for(Eco_creature creature:model_creatures){
+	for(Creature creature:model_creatures){
 		int prediction = creature.predict(image);
 		scores.at(prediction) += creature.get_alpha();
 	}
@@ -148,10 +149,6 @@ int Adaboost_model::get_weighted_prediction(Mat image){
 int Adaboost_model::predict(string image_path){
 	Mat image = imread(image_path,IMREAD_GRAYSCALE);
 	image.convertTo(image,CV_32F);
-	clock_t begin = clock();
 	int prediction = get_weighted_prediction(image);
-	clock_t end = clock();
-	cout << "\tIn predict: " << end - begin << endl;
-	cout << "\tTime: " << ((end - begin)/double(CLOCKS_PER_SEC))*1000 << "ms" << endl;
 	return prediction;
 }

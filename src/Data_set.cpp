@@ -12,7 +12,12 @@ void Data_set::random_split(Data_set& set_1,Data_set& set_2, double percent_in_s
 	set_2.set_samples(samples_2);
 }
 
-void Data_set::load_data(){
+void Data_set::load(string data_path){
+	set_data_set_path(data_path);
+	load();
+}
+
+void Data_set::load(){
 	set_class_directories();
 	set_data_from_class_directories();
 	init_weights();
@@ -20,11 +25,11 @@ void Data_set::load_data(){
 
 void Data_set::set_class_directories(){
 	class_directories.clear();
-	DIR * top_dir = opendir(Data_set::data_set_path.c_str());
+	DIR * top_dir = opendir(data_set_path.c_str());
 	struct dirent *entry = readdir(top_dir);
 	while(entry != NULL){
         if (entry->d_type == DT_DIR && entry->d_name[0] != '.')
-                    class_directories.push_back(Data_set::data_set_path +'/'+ entry->d_name);
+                    class_directories.push_back(data_set_path +'/'+ entry->d_name);
    		entry = readdir(top_dir);
 	}
 }

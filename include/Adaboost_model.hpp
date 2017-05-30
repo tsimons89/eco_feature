@@ -2,7 +2,7 @@
 
 #include <opencv2/opencv.hpp>
 #include "Data_set.hpp"
-#include "Eco_population.hpp"
+#include "Population.hpp"
 
 using namespace std;
 using namespace cv;
@@ -11,7 +11,7 @@ using namespace cv;
 
 class Adaboost_model{
 private:
-	vector<Eco_creature> model_creatures,pool_creatures;
+	vector<Creature> model_creatures,pool_creatures;
 	Data_set train_data,resample_data,test_data;
 	int correct_count;
 	void add_creature_to_model();
@@ -19,11 +19,11 @@ private:
 	void set_resampled_data();
 	void check_params();
 	void update_model();
-	Eco_creature select_from_pool();
-	void update_weights(Eco_creature creature);
-	void upvote_mispredicted_sample(Eco_creature creature,Data_sample& sample);
+	Creature select_from_pool();
+	void update_weights(Creature creature);
+	void upvote_mispredicted_sample(Creature creature,Data_sample& sample);
 	void normalize_weights();
-	bool is_creature_in_model(Eco_creature creature);
+	bool is_creature_in_model(Creature creature);
 	void load_creature(string file_line,string path);
 	int get_weighted_prediction(Mat image);
 

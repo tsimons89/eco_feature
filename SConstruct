@@ -1,13 +1,13 @@
 import os
 
 eco_src = Split('''
-	src/Eco_filter.cpp 
-	src/Eco_genome.cpp 
-	src/Eco_creature.cpp 
+	src/Filter.cpp 
+	src/Genome.cpp 
+	src/Creature.cpp 
 	src/probability.cpp
-	src/Eco_population.cpp
+	src/Population.cpp
 	src/Data_set.cpp
-	src/Eco_options.cpp
+	src/Options.cpp
 	src/Adaboost_model.cpp
 	''')
 
@@ -35,3 +35,4 @@ env = Environment(CPPPATH=includes, CXXFLAGS=cxx_flags, LINKFLAGS=link_flags,
 env.Program('bin/eco_train', ['src/eco_train.cpp'] + eco_src)
 env.Program('bin/eco_test', ['src/eco_test.cpp'] + eco_src)
 env.Program('bin/eco_single_predict', ['src/eco_single_predict.cpp'] + eco_src)
+env.Program('bin/test', ['src/test_main.cpp'] + eco_src)

@@ -34,7 +34,8 @@ private:
 	static string data_set_path;
 public:
 	Data_set(){};
-	void load_data();
+	void load();
+	void load(string data_path);
 	void set_samples(vector<Data_sample> samples){data_samples = samples;}
 	void random_split(Data_set& set_1,Data_set& set_2, double percent_in_set_1);
 	Data_set resample();
