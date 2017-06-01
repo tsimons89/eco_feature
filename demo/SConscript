@@ -1,0 +1,8 @@
+import os
+Import('env')
+Import('objs')
+demo_src = Split('''
+	Demo_options.cpp
+	''')
+
+env.Program('#bin/demo', ['demo.cpp'] + demo_src + objs)

@@ -1,0 +1,15 @@
+import os
+Import('env')
+camera_src = Split('''
+	Camera_options.cpp
+	Camera_capture.cpp 
+	Point_grey_capture.cpp 
+	Webcam_capture.cpp 
+	Component_finder.cpp
+	Image_writer.cpp
+	''')
+obj = env.Object(camera_src)
+
+env.Program('#bin/image_capture', ['image_capture.cpp'] + camera_src)
+
+Return('obj')

@@ -1,0 +1,21 @@
+import os
+Import('env')
+eco_src = Split('''
+	Filter.cpp 
+	Genome.cpp 
+	Creature.cpp 
+	probability.cpp
+	Population.cpp
+	Data_set.cpp
+	Eco_options.cpp
+	Adaboost_model.cpp
+	''')
+obj = env.Object(eco_src)
+
+
+env.Program('#bin/eco_train', ['eco_train.cpp'] + eco_src)
+env.Program('#bin/eco_test', ['eco_test.cpp'] + eco_src)
+env.Program('#bin/eco_single_predict', ['eco_single_predict.cpp'] + eco_src)
+env.Program('#bin/test', ['test_main.cpp'] + eco_src)
+
+Return('obj')
