@@ -16,6 +16,7 @@ includes = Split('''
 	/usr/local/include/opencv2 
 	/usr/local/include/opencv 
 	/usr/include/flycapture/ 
+	/usr/local/include/flycapture/
 	/usr/local/cuda-8.0/include/
 	''')
 
@@ -31,7 +32,7 @@ env = Environment(CPPPATH=includes, CXXFLAGS=cxx_flags, LINKFLAGS=link_flags,
 
 objs = []
 for subdir in ['core','camera','demo']:
-	o = SConscript('%s/SConscript' % subdir,exports=['env','objs'],variant_dir='#%s/core' % subdir, duplicate=0)
+	o = SConscript('%s/SConscript' % subdir,exports=['env','objs'],variant_dir='#build/%s' % subdir, duplicate=0)
 	objs.append(o)
 # SConscript('core/SConscript',exports='env',variant_dir='#build/core', duplicate=0)
 # SConscript('camera/SConscript',exports='env',variant_dir='#build/camera', duplicate=0)
