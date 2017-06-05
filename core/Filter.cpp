@@ -1,5 +1,4 @@
 #include "Filter.hpp"
-#include <opencv2/cudaarithm.hpp>
 
 Mat Filter::apply(const vector<Mat>& images){
 	Mat ret_images;

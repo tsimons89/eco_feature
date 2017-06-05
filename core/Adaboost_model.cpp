@@ -1,4 +1,5 @@
 #include "Adaboost_model.hpp"
+#include "Gpu_filter.cuh"
 #include <ctime>
 #include <fstream> 
 
@@ -35,7 +36,8 @@ void Adaboost_model::check_params(){
 
 void Adaboost_model::add_creature_to_pool(){
 	Population pop;
-	pool_creatures.push_back(pop.create_fit_creature(resample_data));
+	Creature c = pop.create_fit_creature(resample_data);
+	pool_creatures.push_back(c);
 }
 
 void Adaboost_model::update_model(){
@@ -132,8 +134,9 @@ void Adaboost_model::test(){
 int Adaboost_model::predict(Mat image){
 	format_image(image);
 	vector<double> scores(MAX_NUM_CLASSES,0);
+	float * gpu_image = Gpu_filter::upload(image);
 	for(Creature creature:model_creatures){
-		int prediction = creature.predict(image);
+		int prediction = creature.predict(gpu_image);
 		scores.at(prediction) += creature.get_alpha();
 	}
 	double max_score = -1;

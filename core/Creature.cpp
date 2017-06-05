@@ -1,5 +1,6 @@
 #include "Creature.hpp"
 #include "Filter.hpp"
+#include "Gpu_filter.cuh"
 #include <ctime>
 
 int Creature::num_trees;
@@ -8,7 +9,7 @@ int Creature::max_tree_depth;
 Creature::Creature(string genome_str,double alpha,string forest_path){
 	this->alpha = alpha;
 	genome = Genome(genome_str);
-	load_forest(forest_path);
+	load_forest(genome_str,forest_path);
 }
 
 Creature::Creature(string genome_str){
@@ -21,6 +22,13 @@ Creature::Creature(int x_blur,int y_blur, int x_diff, int y_diff){
 
 int Creature::predict(Mat image){
 	Mat processed = process(vector<Mat>{image});
+	Mat results;
+	forest->predict(processed, results);
+	return (int)results.at<float>(0,0);
+}
+
+int Creature::predict(float* gpu_image){
+	Mat processed = process(vector<float *>{gpu_image});
 	Mat results;
 	forest->predict(processed, results);
 	return (int)results.at<float>(0,0);
@@ -46,6 +54,14 @@ Mat Creature::process(vector<Mat> images){
 	Mat filtered_set = filter.apply(images);
 	return filtered_set.reshape(0,images.size());
 }
+
+Mat Creature::process(vector<float*> gpu_images){
+	Gpu_filter filter(genome);
+	Mat filtered_set = filter.apply(gpu_images);
+	return filtered_set.reshape(0,gpu_images.size());
+}
+
+
 
 void Creature::init_forest(){
 	forest = RTrees::create();
@@ -111,10 +127,10 @@ void Creature::write_forest(string path){
 	forest.get()->save(filename.str());
 }
 
-void Creature::load_forest(string path){
+void Creature::load_forest(string genome_string,string path){
 	stringstream filename;
-	filename << path << "/rf_" << genome << ".yml";
-	forest = RTrees::load<RTrees>(filename.str());
+	filename << path << "/rf_" << genome_string << ".yml";
+	forest = RTrees::load(filename.str());
 }
 
 

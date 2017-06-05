@@ -1,5 +1,6 @@
 import os
 Import('env')
+Import('cuda_env')
 eco_src = Split('''
 	Filter.cpp 
 	Genome.cpp 
@@ -10,12 +11,15 @@ eco_src = Split('''
 	Eco_options.cpp
 	Adaboost_model.cpp
 	''')
+cuda_src = 'Gpu_filter.cu'
+
 obj = env.Object(eco_src)
+cuda_obj = cuda_env.Object(cuda_src)
+obj = obj + cuda_obj
 
-
-env.Program('#bin/eco_train', ['eco_train.cpp'] + eco_src)
-env.Program('#bin/eco_test', ['eco_test.cpp'] + eco_src)
-env.Program('#bin/eco_single_predict', ['eco_single_predict.cpp'] + eco_src)
-env.Program('#bin/test', ['test_main.cpp'] + eco_src)
+env.Program('#bin/eco_train', ['eco_train.cpp'] + obj)
+env.Program('#bin/eco_test', ['eco_test.cpp'] + obj)
+env.Program('#bin/eco_single_predict', ['eco_single_predict.cpp'] + obj)
+env.Program('#bin/core_test', ['core_test.cpp'] + obj)
 
 Return('obj')

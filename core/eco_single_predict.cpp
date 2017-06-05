@@ -23,6 +23,7 @@ int main(int argc, char * argv[]){
 		double clocks = end - begin;
 		min_clocks = min(min_clocks,clocks);
 		max_clocks = max(max_clocks,clocks);
+		cout << "Clocks: " << clocks << endl;
 	}
 
 

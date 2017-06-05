@@ -17,7 +17,8 @@ protected:
 	Mat labels;
 	Mat images;
 	
-	Mat process(vector<Mat> data_set);
+	Mat process(vector<Mat> images);
+	Mat process(vector<float*> gpu_images);
 	void init_forest();
 	void set_labels_and_images(Data_set data_set);
 	void set_fitness(Data_set data_set);
@@ -25,7 +26,7 @@ protected:
 	Mat predict();
 	double calc_fitness(Mat results,vector<double> weights);
 	static int num_trees,max_tree_depth;
-	void load_forest(string path);
+	void load_forest(string genome_string,string path);
 
 public:
 	Creature(){genome.init();}
@@ -37,6 +38,7 @@ public:
 	friend ostream& operator<<(ostream& stream, const Creature& eco_creature);
 	bool operator<(const Creature& rhs);
 	int predict(Mat image);
+	int predict(float* gpu_image);
 	bool mutate(double rate){trained = false;return genome.mutate(rate);}
 	void train(Data_set data_set);
 	void update_fitness(Data_set data_set);
