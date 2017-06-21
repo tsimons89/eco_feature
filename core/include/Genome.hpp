@@ -11,6 +11,7 @@ protected:
 	static unsigned int gene_max;
 	Gene random_select_gene(Gene g1,Gene g2);
 	bool set_random_gene(double prob,Gene& gene);
+  bool set_random_gene(double prob,Gene& gene,unsigned int max);
 	void split_genome_string(string s,Gene* values);
 
 public:

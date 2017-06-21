@@ -1,48 +1,56 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/cuda.hpp>
-#include "Gpu_filter.cuh"
 #include "Filter.hpp"
-#include "Genome.hpp"
+#include "Filter_set.hpp"
 #include <ctime>
 
 using namespace std;
 using namespace cv;
+using namespace ml;
+
+int my_print(int i){
+  cout << "My num: " << i << endl;
+  return 50;
+}
 
 int main(int argc, char * argv[]){
-	assert(argc >= 2);
-	Mat image = imread(argv[1],IMREAD_GRAYSCALE);
-	image.convertTo(image,CV_32F);
+  // int index = 0;
+  // int array[3] = {1,10,100};
+  // array[++index] = my_print(index -1);
+  // for(int i = 0;i<3;i++)
+  //   cout << "Array: " << array[i] << endl;
+  assert(argc == 2);
+  Mat original = imread(argv[1],IMREAD_GRAYSCALE);
+  original.convertTo(original,CV_32F);
 
-	Genome g(3,3,0,0);
-	Gpu_filter gpu_filter(g);
-	Filter cpu_filter(g);
+  Filter_set::set_max(5,5,1,1);
+  clock_t b = clock();
+  Filter_set set(original);
+  clock_t e = clock();
+  cout << "set: " << e-b << endl;
 
-	float* gpu_image = Gpu_filter::upload(image);
-	Mat res = gpu_filter.apply(gpu_image);
-
-
-	clock_t begin = clock();
-	res = gpu_filter.apply(gpu_image);
-	clock_t end = clock();
-
-	cout << "Clocks: " << end - begin << endl;
-
-
-	Mat r = cpu_filter.apply(image);
-
-
-	begin = clock();
-	r = cpu_filter.apply(image);
-	end = clock();
-	cout << "CPU clocks: " << end - begin << endl;
-
-
-	Mat diff;
-	absdiff(r,res,diff);
-	res.convertTo(res,CV_8U);
-	r.convertTo(r,CV_8U);
-	imshow("result",res);
-	imshow("cpu", r);
-	imshow("diff",diff);
-	waitKey(0);
+  b = clock();
+  Filter_set set2(original);
+  e = clock();
+  cout << "set2: " << e-b << endl;
+  
+  
+  for(int xd = 0; xd <= 1; xd++){
+    for(int yd = 0; yd <= 1; yd++){
+      for(int xb = 0; xb <= 5; xb++){
+  	for(int yb = 0; yb <= 5; yb++){
+  	  Genome g(xb,yb,xd,yd);
+  	  Filter filter(g);
+  	  Mat filter_image = filter.apply(original);
+  	  Mat set_image = set.get_image(g);
+  	  Mat diff;
+  	  absdiff(filter_image,set_image,diff);
+  	  diff.convertTo(diff,CV_8U);
+  	  imshow("diff",diff*1000);
+  	  waitKey(30);
+  	}
+      }
+    }
+  }
+  
 }

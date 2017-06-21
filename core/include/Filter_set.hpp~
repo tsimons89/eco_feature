@@ -1,0 +1,12 @@
+#include <opencv2/opencv.hpp>
+#include "Genome.hpp"
+
+using namespace std;
+using namespace cv;
+
+class Filter_set{
+private:
+  int max_x_blur,max_y_blur,max_x_diff,max_y_diff;
+public:
+  Filter_set(Genome max_genome);
+}

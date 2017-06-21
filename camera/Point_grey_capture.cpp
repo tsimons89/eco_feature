@@ -2,17 +2,6 @@
 
 
 
-void PrintFormat7Capabilities(Format7Info fmt7Info)
-{
-    cout << "Max image pixels: (" << fmt7Info.maxWidth << ", "
-         << fmt7Info.maxHeight << ")" << endl;
-    cout << "Image Unit size: (" << fmt7Info.imageHStepSize << ", "
-         << fmt7Info.imageVStepSize << ")" << endl;
-    cout << "Offset Unit size: (" << fmt7Info.offsetHStepSize << ", "
-         << fmt7Info.offsetVStepSize << ")" << endl;
-    cout << "Pixel format bitfield: 0x" << fmt7Info.pixelFormatBitField << endl;
-}
-
 void Point_grey_capture::init_camera(){
 	camera.Connect( 0 );
 	set_cam_info();
@@ -38,7 +27,7 @@ void Point_grey_capture::set_cam_info(){
 }
 
 void Point_grey_capture::config_cam(){
-	Format7ImageSettings cam_settings;
+  Format7ImageSettings cam_settings;
     cam_settings.mode = MODE_0;
     cam_settings.offsetX = (cam_info.maxWidth - CAM_WIDTH)/2;
     cam_settings.offsetY = (cam_info.maxHeight - CAM_HEIGHT)/2;

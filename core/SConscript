@@ -2,6 +2,8 @@ import os
 Import('env')
 Import('cuda_env')
 eco_src = Split('''
+	Filter_set.cpp
+	Test_filter.cpp
 	Filter.cpp 
 	Genome.cpp 
 	Creature.cpp 
@@ -10,6 +12,9 @@ eco_src = Split('''
 	Data_set.cpp
 	Eco_options.cpp
 	Adaboost_model.cpp
+	Random_forest.cpp
+	Tree.cpp
+	Tree_node.cpp
 	''')
 cuda_src = 'Gpu_filter.cu'
 

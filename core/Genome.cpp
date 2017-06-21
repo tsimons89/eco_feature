@@ -40,14 +40,21 @@ Genome::Genome(Genome mother, Genome father){
 
 bool Genome::mutate(double rate){
 	return (set_random_gene(rate,x_blur)|
-			set_random_gene(rate,y_blur)|
-			set_random_gene(rate,x_diff)|
-			set_random_gene(rate,y_diff));
+		set_random_gene(rate,y_blur)|
+		set_random_gene(rate,x_diff,1)|
+		set_random_gene(rate,y_diff,1));
 }
 
 bool Genome::set_random_gene(double prob,Gene& gene){
 	if(eval_probability(prob)){
 		gene = get_random_uint(gene_max);
+		return true;
+	}
+	return false;
+}
+bool Genome::set_random_gene(double prob,Gene& gene,unsigned int max){
+	if(eval_probability(prob)){
+		gene = get_random_uint(max);
 		return true;
 	}
 	return false;

@@ -13,11 +13,13 @@ typedef struct Data_sample{
 	Mat image;
 	int label;
 	double weight;
+	float* gpu_image;
 } Data_sample;
 
 class Data_set{
 private:
 	string path;
+	bool use_gpu = false;
 	vector<string> class_directories;
 	int cur_label;
 	int num_labels;
@@ -34,6 +36,7 @@ private:
 	static string data_set_path;
 public:
 	Data_set(){};
+	void set_use_gpu(bool use){use_gpu = use;}
 	void load();
 	void load(string data_path);
 	void set_samples(vector<Data_sample> samples){data_samples = samples;}
@@ -41,6 +44,7 @@ public:
 	Data_set resample();
 	vector<int> get_labels();
 	vector<Mat> get_images();
+	vector<float*> get_gpu_images();
 	vector<double> get_weights();
 	int get_num_labels(){return class_directories.size();}
 	vector<Data_sample> data_samples;

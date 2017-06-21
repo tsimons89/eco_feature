@@ -26,5 +26,3 @@ public:
 	Mat apply(Mat image);
 	Mat apply(const vector<Mat>& images);
 };
-
-

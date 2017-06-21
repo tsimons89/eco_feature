@@ -48,6 +48,7 @@ Mat Gpu_filter::apply(float* gpu_image){
 	blur_y(genome.y_blur);
 	diff_x(genome.x_diff);
 	diff_y(genome.y_diff);
+	Mat ret = download();
 	return download();	
 }
 

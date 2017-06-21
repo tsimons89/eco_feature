@@ -18,9 +18,12 @@ void Adaboost_model::train(){
 void Adaboost_model::add_creature_to_model(){
 	set_resampled_data();
 	pool_creatures.clear();
+	clock_t begin = clock();
 	for(unsigned int i = 0; i < Adaboost_model::pool_size; i++)
 		add_creature_to_pool();
 	update_model();
+	clock_t end = clock();
+	cout << "Train time: " << double(end - begin)/(double)CLOCKS_PER_SEC << endl;
 }
 
 void Adaboost_model::set_resampled_data(){
@@ -134,9 +137,8 @@ void Adaboost_model::test(){
 int Adaboost_model::predict(Mat image){
 	format_image(image);
 	vector<double> scores(MAX_NUM_CLASSES,0);
-	float * gpu_image = Gpu_filter::upload(image);
 	for(Creature creature:model_creatures){
-		int prediction = creature.predict(gpu_image);
+		int prediction = creature.predict(image);
 		scores.at(prediction) += creature.get_alpha();
 	}
 	double max_score = -1;

@@ -1,5 +1,14 @@
 import os
 
+AddOption('--gdb',
+		  dest='gdb',
+		  action='store_true',
+		  default=False)
+AddOption('--gprof',
+		  dest='gprof',
+		  action='store_true',
+		  default=False)
+
 boost_libs = Split('boost_filesystem boost_program_options boost_system boost_regex')
 
 opencv_libs = Split('opencv_core opencv_highgui opencv_imgproc opencv_objdetect opencv_ml opencv_imgcodecs opencv_videoio')
@@ -28,8 +37,15 @@ gpu_includes = Split('''
 
 cxx_flags = "-Wall -O3 -fopenmp -std=c++11"
 link_flags = "-fopenmp"
-# cxx_flags = "-pg -std=c++11"
-# link_flags = "-pg"
+
+if GetOption('gprof'):
+	cxx_flags = "-pg -std=c++11"
+	link_flags = "-pg"
+
+if GetOption('gdb'):
+	cxx_flags = "-g -fvar-tracking -std=c++11"
+	link_flags = "-g -fvar-tracking"
+
 
 env = Environment(CPPPATH=includes, CXXFLAGS=cxx_flags, LINKFLAGS=link_flags, 
 		LIBS=boost_libs + opencv_libs + cuda_libs + flycapture_libs,

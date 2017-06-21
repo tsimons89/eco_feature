@@ -1,0 +1,67 @@
+#include "Filter.hpp"
+
+Mat Filter::apply(const vector<Mat>& images){
+	Mat ret_images;
+	for(Mat image:images)
+		ret_images.push_back(apply(image));
+	return ret_images;
+}
+
+
+Mat Filter::apply(Mat image){
+	this->image = image;
+	blur_x(genome.x_blur);
+	blur_y(genome.y_blur);
+	diff_x(genome.x_diff);
+	diff_y(genome.y_diff);
+	return this->image;	
+}
+
+void Filter::blur_x(){
+	Size new_size(xb_image.cols-1,xb_image.rows);
+	xb_image = xb_image(Rect(Point(1,0),new_size)) + xb_image(Rect(Point(0,0),new_size));
+	xb_image /=2;
+}
+
+void Filter::blur_y(){
+	Size new_size(yb_image.cols,yb_image.rows-1);
+	yb_image = yb_image(Rect(Point(0,1),new_size)) + yb_image(Rect(Point(0,0),new_size));
+	yb_image /=2;
+
+}
+
+void Filter::diff_x(){
+	Size new_size(xd_image.cols-1,xd_image.rows);
+	xd_image = xd_image(Rect(Point(1,0),new_size)) - xd_image(Rect(Point(0,0),new_size));
+	xd_image /=2;
+}
+
+void Filter::diff_y(){
+	Size new_size(yd_image.cols,yd_image.rows-1);
+	yd_image = yd_image(Rect(Point(0,1),new_size)) - yd_image(Rect(Point(0,0),new_size));
+	yd_image /=2;
+}
+
+void Filter::blur_x(int n){
+  xb_image = image;
+  for(int i = 0; i < n; i++)
+		blur_x();
+}
+
+void Filter::blur_y(int n){
+  yb_image = image;
+  for(int i = 0; i < n; i++)
+		blur_y();
+}
+
+void Filter::diff_x(int n){
+  xd_image = image;
+  for(int i = 0; i < n; i++)
+		diff_x();
+}
+
+void Filter::diff_y(int n){
+  yd_image = image
+  for(int i = 0; i < n; i++)
+		diff_y();
+}

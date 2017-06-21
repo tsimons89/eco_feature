@@ -1,6 +1,7 @@
 #pragma once
 #include "Genome.hpp"
 #include "Data_set.hpp"
+#include "Random_forest.hpp"
 
 using namespace ml;
 
@@ -12,7 +13,7 @@ protected:
 	Genome genome;	
 	double fitness = NOT_UPDATED;
 	double alpha;
-	Ptr<RTrees> forest;
+  	Ptr<RTrees> forest;
 	bool trained = false;
 	Mat labels;
 	Mat images;

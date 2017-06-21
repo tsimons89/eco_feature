@@ -1,4 +1,5 @@
 #include "Data_set.hpp"
+#include "Gpu_filter.cuh"
 
 string Data_set::data_set_path;
 
@@ -43,7 +44,8 @@ void Data_set::set_data_from_class_directories(){
 
 void Data_set::add_class_data(string dir){
 	for(String filename:get_all_filenames(dir)){
-		Data_sample new_sample = {.image = get_image(filename),.label = cur_label, .weight = WEIGHT_NOT_SET};
+		Mat image = get_image(filename);
+		Data_sample new_sample = {.image = image,.label = cur_label, .weight = WEIGHT_NOT_SET, .gpu_image = Gpu_filter::upload(image)};
 		data_samples.push_back(new_sample);
 	}
 	cur_label++;
@@ -81,6 +83,15 @@ vector<Mat> Data_set::get_images(){
 	}
 	return images;
 }
+
+vector<float*> Data_set::get_gpu_images(){
+	vector<float*> gpu_images;
+	for(Data_sample sample:data_samples){
+		gpu_images.push_back(sample.gpu_image);
+	}
+	return gpu_images;
+}
+
 
 vector<double> Data_set::get_weights(){
 	vector<double> weights;
