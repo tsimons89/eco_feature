@@ -36,6 +36,7 @@ private:
 public:
 	Population();
 	Creature create_fit_creature(Data_set data_set);
+	Creature create_most_fit_creature(Data_set data_set);
 	
 	static void set_replacement_rate(double rate){replacement_rate = rate;}
 	static void set_mutation_rate(double rate){mutation_rate = rate;}

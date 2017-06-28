@@ -39,7 +39,7 @@ void Adaboost_model::check_params(){
 
 void Adaboost_model::add_creature_to_pool(){
 	Population pop;
-	Creature c = pop.create_fit_creature(resample_data);
+	Creature c = pop.create_most_fit_creature(resample_data);
 	pool_creatures.push_back(c);
 }
 

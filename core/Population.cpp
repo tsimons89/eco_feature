@@ -17,6 +17,31 @@ void Population::assert_params_set(){
 	assert(population_size > 0);	
 }
 
+Creature Population::create_most_fit_creature(Data_set data_set){
+  set_data_sets(data_set);
+  init_evolution();
+  Creature best_creature;
+  int b_max = 5;
+  int d_max = 1;
+  for(int xb = 0; xb <= b_max; xb++ ){
+    for(int yb = 0; yb <= b_max; yb++){
+      for(int xd = 0; xd <= d_max; xd++){
+	for(int yd = 0; yd <= d_max; yd++){
+	  Creature creature(xb,yb,xd,yd);
+	  creature.train(data_set);
+	  creature.update_fitness(data_set);
+	  double fitness = creature.get_fitness();
+	  if(best_fitness < fitness){
+	    best_fitness = fitness;
+	    best_creature = creature;
+	  }
+	}
+      }
+    }
+  }
+  return best_creature;
+}
+
 Creature Population::create_fit_creature(Data_set data_set){
 	set_data_sets(data_set);
 	init_evolution();

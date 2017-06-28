@@ -1,0 +1,11 @@
+#include "Gini.hpp"
+
+void Gini::display_heat_map(Data_set data){
+  this.data = data;
+  init_heat_map();
+  build_heat_map();
+  Mat disp;
+  heat_map.convertTo(disp,CV_8U);
+  imshow("gini purity",heat_map);
+  waitKey(0);
+}

@@ -6,6 +6,7 @@ eco_src = Split('''
 	Test_filter.cpp
 	Filter.cpp 
 	Genome.cpp 
+	Gini.cpp
 	Creature.cpp 
 	probability.cpp
 	Population.cpp

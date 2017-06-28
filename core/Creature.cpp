@@ -5,7 +5,6 @@
 
 int Creature::num_trees;
 int Creature::max_tree_depth;
-
 Creature::Creature(string genome_str,double alpha,string forest_path){
 	this->alpha = alpha;
 	genome = Genome(genome_str);

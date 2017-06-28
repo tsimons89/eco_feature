@@ -1,0 +1,14 @@
+#include "Data_set.hpp"
+#include <opencv2/opencv.hpp>
+
+using namespace std;
+using namespace cv;
+
+class Gini{
+  Mat heat_map;
+  Data_set data;
+public:
+  Gini(){}
+  void display_heat_map(Data_set data);
+  void build_heat_max
+}

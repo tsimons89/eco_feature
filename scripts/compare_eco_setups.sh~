@@ -1,0 +1,8 @@
+#!/bin/bash
+
+NUM_CREATURES=5
+NUM_TREE=5
+TREE_DEPTH=5
+RESULTS_DIR=../results/compare_eco_setups_tmp
+
+mkdir $RESULTS_DIR
