@@ -16,7 +16,7 @@ protected:
   	Ptr<RTrees> forest;
 	bool trained = false;
 	Mat labels;
-	Mat images;
+  Mat images,images_float;
 	
 	Mat process(vector<Mat> images);
 	Mat process(vector<float*> gpu_images);

@@ -39,7 +39,7 @@ void Adaboost_model::check_params(){
 
 void Adaboost_model::add_creature_to_pool(){
 	Population pop;
-	Creature c = pop.create_most_fit_creature(resample_data);
+	Creature c = pop.create_fit_creature(resample_data);
 	pool_creatures.push_back(c);
 }
 
@@ -154,7 +154,7 @@ int Adaboost_model::predict(Mat image){
 
 int Adaboost_model::predict(string image_path){
 	Mat image = imread(image_path,IMREAD_GRAYSCALE);
-	image.convertTo(image,CV_32F);
+	image.convertTo(image,CV_32S);
 	int prediction = predict(image);
 	return prediction;
 }
@@ -162,6 +162,6 @@ int Adaboost_model::predict(string image_path){
 void Adaboost_model::format_image(Mat& image){
 	if(image.channels() == 3)
 		cvtColor(image,image,CV_RGB2GRAY);
-	if(image.type() != CV_32F)
-		image.convertTo(image,CV_32F);
+	if(image.type() != CV_32S)
+		image.convertTo(image,CV_32S);
 }

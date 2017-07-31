@@ -22,6 +22,7 @@ Creature::Creature(int x_blur,int y_blur, int x_diff, int y_diff){
 int Creature::predict(Mat image){
 	Mat processed = process(vector<Mat>{image});
 	Mat results;
+	processed.convertTo(processed,CV_32F);
 	forest->predict(processed, results);
 	return (int)results.at<float>(0,0);
 }
@@ -46,6 +47,7 @@ void Creature::train(Data_set data_set){
 void Creature::set_labels_and_images(Data_set data_set){
 	labels = Mat(data_set.get_labels(), true);
 	images = process(data_set.get_images());
+	images.convertTo(images,CV_32F);
 }
 
 Mat Creature::process(vector<Mat> images){

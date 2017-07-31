@@ -20,26 +20,26 @@ Mat Filter::apply(Mat image){
 void Filter::blur_x(){
 	Size new_size(image.cols-1,image.rows);
 	image = image(Rect(Point(1,0),new_size)) + image(Rect(Point(0,0),new_size));
-	image /=2;
+	// image /=2;
 }
 
 void Filter::blur_y(){
 	Size new_size(image.cols,image.rows-1);
 	image = image(Rect(Point(0,1),new_size)) + image(Rect(Point(0,0),new_size));
-	image /=2;
+	// image /=2;
 
 }
 
 void Filter::diff_x(){
 	Size new_size(image.cols-1,image.rows);
 	image = image(Rect(Point(1,0),new_size)) - image(Rect(Point(0,0),new_size));
-	image /=2;
+	// image /=2;
 }
 
 void Filter::diff_y(){
 	Size new_size(image.cols,image.rows-1);
 	image = image(Rect(Point(0,1),new_size)) - image(Rect(Point(0,0),new_size));
-	image /=2;
+	// image /=2;
 }
 
 void Filter::blur_x(int n){

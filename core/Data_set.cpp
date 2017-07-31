@@ -59,7 +59,8 @@ vector<String> Data_set::get_all_filenames(string dir){
 
 Mat Data_set::get_image(string filename){
 	Mat image = imread(filename,IMREAD_GRAYSCALE);
-	image.convertTo(image,CV_32F);
+	image.convertTo(image,CV_32S);
+	image *= 2;
 	return image;
 }
 
